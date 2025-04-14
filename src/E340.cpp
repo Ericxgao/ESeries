@@ -30,8 +30,13 @@ struct E340Oscillator {
 
 	// State
 	T phases[N] = {};
-	dsp::MinBlepGenerator<16, 32, T> sinMinBleps[N];
-	dsp::MinBlepGenerator<16, 32, T> sawMinBleps[N];
+	#ifdef METAMODULE
+	dsp::MinBlepGenerator<16, 16, simd::float_4> sinMinBleps[N];
+	dsp::MinBlepGenerator<16, 16, simd::float_4> sawMinBleps[N];
+	#else
+	dsp::MinBlepGenerator<4, 32, T> sinMinBleps[N];
+	dsp::MinBlepGenerator<4, 32, T> sawMinBleps[N];
+	#endif
 	float lastSyncValue = 0.f;
 	dsp::RCFilter sinFilter;
 	dsp::RCFilter sawFilter;
